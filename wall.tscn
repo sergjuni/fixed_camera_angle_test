@@ -4,6 +4,7 @@
 size = Vector3(10, 5, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6eimw"]
+size = Vector3(10, 5, 1)
 
 [node name="Wall" type="Node3D"]
 

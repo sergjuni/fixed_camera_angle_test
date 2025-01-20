@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://2o8moqc8oewp"]
+[gd_scene load_steps=8 format=3 uid="uid://2o8moqc8oewp"]
 
 [ext_resource type="PackedScene" uid="uid://bik65e7osiky5" path="res://Player.tscn" id="1_jgrfu"]
 [ext_resource type="MeshLibrary" uid="uid://daedu3225hpmg" path="res://walls_mesh.tres" id="2_24c14"]
+[ext_resource type="Script" path="res://camera_trigger.gd" id="3_nos54"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v8uum"]
 size = Vector3(60, 2, 60)
@@ -11,6 +12,9 @@ size = Vector3(60, 2, 60)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uapxr"]
 albedo_color = Color(0.756863, 0.34902, 0.792157, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1441q"]
+size = Vector3(1.0578, 0.355957, 2.25069)
 
 [node name="Main" type="Node3D"]
 
@@ -25,10 +29,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.163639, 0, 0)
 mesh = SubResource("BoxMesh_wg2ur")
 surface_material_override/0 = SubResource("StandardMaterial3D_uapxr")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.943072, 0.332589, 0, -0.332589, 0.943072, 3.34991, 24.096, 44.9393)
-fov = 33.75
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.931576, -0.345947, -0.111742, 0.354263, 0.794834, 0.492682, -0.0816254, -0.498557, 0.863005, 0, 28.1757, 47.1801)
 
@@ -40,3 +40,41 @@ mesh_library = ExtResource("2_24c14")
 data = {
 "cells": PackedInt32Array(12, 65531, 0, 7, 65531, 0, 2, 65531, 2, 65533, 65531, 655360, 65531, 65529, 1441792, 65534, 65526, 1441792, 0, 65528, 655360, 5, 65528, 655360, 10, 65528, 655360, 14, 65528, 655360, 65531, 65525, 1048576, 65534, 65522, 1048576, 65531, 65522, 1048576)
 }
+
+[node name="camera1" type="Camera3D" parent="."]
+transform = Transform3D(-0.339954, 0.303534, -0.890111, 0.108297, 0.952821, 0.283557, 0.934186, 0, -0.356787, 20.381, 1.079, -13.916)
+
+[node name="Area3D" type="Area3D" parent="camera1"]
+script = ExtResource("3_nos54")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="camera1/Area3D"]
+transform = Transform3D(14.5996, -0.801062, 2.30229, 0.750235, -12.4384, -1.67156, -5.99251, -3.50887, 5.39983, -0.0461655, 1.93727, -5.59977)
+shape = SubResource("BoxShape3D_1441q")
+
+[node name="camera2" type="Camera3D" parent="."]
+transform = Transform3D(-0.214729, 0.392647, -0.894271, 0.0160049, 0.91692, 0.398749, 0.976543, 0.0713101, -0.203173, 3.859, 3.079, -11.418)
+current = true
+
+[node name="Area3D" type="Area3D" parent="camera2"]
+script = ExtResource("3_nos54")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="camera2/Area3D"]
+transform = Transform3D(14.5996, -0.801062, 2.30229, 0.750235, -12.4384, -1.67156, -5.99251, -3.50887, 5.39983, -1.04427, 2.66194, -7.94075)
+shape = SubResource("BoxShape3D_1441q")
+
+[node name="camera3" type="Camera3D" parent="."]
+transform = Transform3D(-0.471891, -0.272374, 0.838529, 0.0165505, 0.948179, 0.317305, -0.881501, 0.163611, -0.44293, 2.40865, 2.038, -12.2855)
+
+[node name="Area3D" type="Area3D" parent="camera3"]
+script = ExtResource("3_nos54")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="camera3/Area3D"]
+transform = Transform3D(14.5996, -0.801066, 2.30229, 0.750237, -12.4384, -1.67156, -5.99251, -3.50887, 5.39983, 3.36893, 2.11276, -7.00152)
+shape = SubResource("BoxShape3D_1441q")
+
+[connection signal="body_entered" from="camera1/Area3D" to="camera1/Area3D" method="enter_trigger"]
+[connection signal="body_exited" from="camera1/Area3D" to="camera1/Area3D" method="exit_trigger"]
+[connection signal="body_entered" from="camera2/Area3D" to="camera2/Area3D" method="enter_trigger"]
+[connection signal="body_exited" from="camera2/Area3D" to="camera2/Area3D" method="exit_trigger"]
+[connection signal="body_entered" from="camera3/Area3D" to="camera3/Area3D" method="enter_trigger"]
+[connection signal="body_exited" from="camera3/Area3D" to="camera3/Area3D" method="exit_trigger"]
